@@ -6,9 +6,7 @@
 const char opr[]={'*','/','+','-',0};
 const int opr_sz=5;
 #define NO_MEMORY
-//whats next?
-//detect double operators segment opr*opr
-//detect when the expression its just a number
+//que sigue?
 //definir operaciones de misma jerarquia.
 double sumar(double d1,double d2){
 	return d1+d2;
@@ -52,18 +50,18 @@ char *opder(char *str,char *op)
         opsig=str+strlen(str);
     return opsig;
 }
-typedef struct doublepairs{
+typedef struct pardedobles{
     double d1;
     double d2;
-}DOUBLEPAIRS;
-DOUBLEPAIRS getNumbersFromOperation(char *str,char *op)
+}PARDEDOBLES;
+PARDEDOBLES getNumbersFromOperation(char *str,char *op)
 {
-    DOUBLEPAIRS d;
+    PARDEDOBLES d;
     char *isolatedoperation,*opi,*opd;
     int isolatedoperationsize;
     opi=opizq(str,op);
     opd=opder(str,op);
-    isolatedoperationsize=opd-opi;
+    isolatedoperationsize=opd-opi;//tamagno de la operacion aislada
     isolatedoperation=(char*)calloc(isolatedoperationsize+1,sizeof(*isolatedoperation));
     strncpy(isolatedoperation,opi,isolatedoperationsize);
     sscanf(isolatedoperation,"%lf%*c%lf",&d.d1,&d.d2);
@@ -114,7 +112,7 @@ RESULT actualizarCadOp(char *operptr,RESULT res){
 }
 RESULT resolverUna(char *str)
 {
-    DOUBLEPAIRS d;
+    PARDEDOBLES d;
     RESULT res={0,str,NO_RESUELTO};
 	OPERADOR op=encontrarOperador(str);
 	if(op.ptr==NULL){//NULL SERIA COMO UN NOOP
