@@ -35,10 +35,8 @@ char *opizq(char *str,char *operador)
     }
     if(opprev!=str && *opprev!='-')
        opprev++; 
-    
     return opprev;
 }
-
 char *opder(char *str,char *op)
 {
     char *opsig;
@@ -54,7 +52,7 @@ typedef struct pardedobles{
     double d1;
     double d2;
 }PARDEDOBLES;
-PARDEDOBLES getNumbersFromOperation(char *str,char *op)
+PARDEDOBLES obtenerOperandos(char *str,char *op)
 {
     PARDEDOBLES d;
     char *isolatedoperation,*opi,*opd;
@@ -96,7 +94,6 @@ typedef struct rslt{
     enum estado state_id;
 }RESULT;
 char states[][30]={"RESUELTO","NO_RESUELTO","DIVISION POR CERO"};
-
 RESULT actualizarCadOp(char *operptr,RESULT res){
     char *opi,*opd,*str2;
 	int strSize=strlen(res.cadOp)*8;
@@ -120,13 +117,12 @@ RESULT resolverUna(char *str)
 		res.state_id=RESUELTO;
 		return res;
 	}
-     d=getNumbersFromOperation(str,op.ptr);
+     d=obtenerOperandos(str,op.ptr);
      //resolver
     res.result=	operaciones[op.opr_idx](d.d1,d.d2);
 	res=actualizarCadOp(op.ptr,res);
     return res;
 }
-
 int elFin(RESULT r,char *str)
 {
     char dstr[16];
@@ -134,7 +130,6 @@ int elFin(RESULT r,char *str)
     /* habria que hacer mas cosas pero... */
     return strcmp(dstr,str);
 }
-
 int main(int argc,char **argv)
 {
     RESULT r;
@@ -145,7 +140,6 @@ int main(int argc,char **argv)
 		r.cadOp=realloc(r.cadOp,strlen(r.cadOp)*2);
 		fgets(r.cadOp+strlen(r.cadOp),strlen(r.cadOp),stdin);
 	}
-
 	r=resolverUna(r.cadOp);
     while(r.state_id==NO_RESUELTO && elFin(r,r.cadOp)!=0){
 		r=resolverUna(r.cadOp);
